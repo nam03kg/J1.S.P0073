@@ -1,0 +1,81 @@
+package Controller;
+
+import Model.Expense;
+import util.Inputer;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+/**
+ * Manages operations on expenses: add, display, and delete.
+ */
+public class ExpenseController {
+
+    private List<Expense> expenses;
+    private int currentId;
+
+    public ExpenseController() {
+        expenses = new ArrayList<>();
+        currentId = 0;
+    }
+
+    /**
+     * Adds a new expense to the list.
+     */
+    public void addExpense() {
+        System.out.println("-------- Add an expense --------");
+        Date date = Inputer.inputDate("Enter Date (dd-MM-yyyy): ");
+        double amount = Inputer.inputDouble("Enter Amount: ");
+        String content = Inputer.inputString("Enter Content: ");
+
+        expenses.add(new Expense(++currentId, date, amount, content));
+        System.out.println("Expense added successfully.");
+    }
+
+    /**
+     * Displays all expenses along with the total amount.
+     */
+    public void displayAll() {
+        System.out.println("--------- Display all expenses ------------");
+        if (expenses.isEmpty()) {
+            System.out.println("No expenses to display.");
+            return;
+        }
+
+        double total = 0;
+        System.out.printf("%-5s %-15s %-10s %-20s%n", "ID", "Date", "Amount", "Content");
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MMM-yyyy");
+
+        for (Expense expense : expenses) {
+            System.out.printf("%-5d %-15s %-10.2f %-20s%n",
+                    expense.getId(),
+                    sdf.format(expense.getDate()),
+                    expense.getAmount(),
+                    expense.getContent());
+            total += expense.getAmount();
+        }
+
+        System.out.println("Total: " + total);
+    }
+
+    /**
+     * Deletes an expense by ID.
+     */
+    public void deleteExpense() {
+        System.out.println("-------- Delete an expense --------");
+        int id = Inputer.inputInt("Enter ID: ", 1, Integer.MAX_VALUE);
+
+        Expense expenseToDelete = expenses.stream()
+                .filter(expense -> expense.getId() == id)
+                .findFirst()
+                .orElse(null);
+
+        if (expenseToDelete != null) {
+            expenses.remove(expenseToDelete);
+            System.out.println("Delete an expense successful.");
+        } else {
+            System.out.println("Delete an expense fail.");
+        }
+    }
+}
