@@ -1,0 +1,43 @@
+package view;
+
+import Controller.ExpenseController;
+import util.Inputer;
+
+/**
+ * Entry point for the Handy Expense program.
+ */
+public class Main {
+
+    /**
+     * Main method to start the Handy Expense program.
+     *
+     * @param args command-line arguments (not used).
+     */
+    public static void main(String[] args) {
+        ExpenseController controller = new ExpenseController();
+
+        while (true) {
+            System.out.println("======= Handy Expense program =======");
+            System.out.println("1. Add an expense");
+            System.out.println("2. Display all expenses");
+            System.out.println("3. Delete an expense");
+            System.out.println("4. Quit");
+
+            int choice = Inputer.inputInt("Your choice: ", 1, 4);
+            switch (choice) {
+                case 1:
+                    controller.addExpense();
+                    break;
+                case 2:
+                    controller.displayAll();
+                    break;
+                case 3:
+                    controller.deleteExpense();
+                    break;
+                case 4:
+                    System.out.println("Program exited.");
+                    return;
+            }
+        }
+    }
+}
