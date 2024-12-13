@@ -1,0 +1,90 @@
+package util;
+
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Scanner;
+
+/**
+ * Utility class for input validation and formatting.
+ * Provides methods to read and validate various types of user inputs.
+ */
+public class Inputer {
+    private static final Scanner sc = new Scanner(System.in);
+
+    /**
+     * Prompts the user to enter an integer within a specified range.
+     *
+     * @param message the message to display to the user.
+     * @param min     the minimum acceptable value (inclusive).
+     * @param max     the maximum acceptable value (inclusive).
+     * @return a valid integer within the specified range.
+     */
+    public static int inputInt(String message, int min, int max) {
+        while (true) {
+            try {
+                System.out.print(message);
+                int result = Integer.parseInt(sc.nextLine().trim());
+                if (result >= min && result <= max) {
+                    return result;
+                }
+                System.out.println("Input must be in range [" + min + ", " + max + "].");
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter an integer.");
+            }
+        }
+    }
+
+    /**
+     * Prompts the user to enter a double value.
+     *
+     * @param message the message to display to the user.
+     * @return a valid double value entered by the user.
+     */
+    public static double inputDouble(String message) {
+        while (true) {
+            try {
+                System.out.print(message);
+                return Double.parseDouble(sc.nextLine().trim());
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a valid number.");
+            }
+        }
+    }
+
+    /**
+     * Prompts the user to enter a non-empty string.
+     *
+     * @param message the message to display to the user.
+     * @return a valid non-empty string entered by the user.
+     */
+    public static String inputString(String message) {
+        while (true) {
+            System.out.print(message);
+            String result = sc.nextLine().trim();
+            if (!result.isEmpty()) {
+                return result;
+            }
+            System.out.println("Input cannot be empty.");
+        }
+    }
+
+    /**
+     * Prompts the user to enter a date in the format "dd-MM-yyyy".
+     *
+     * @param message the message to display to the user.
+     * @return a valid Date object entered by the user.
+     */
+    public static Date inputDate(String message) {
+        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+        sdf.setLenient(false);
+        while (true) {
+            try {
+                System.out.print(message);
+                return sdf.parse(sc.nextLine().trim());
+            } catch (ParseException e) {
+                System.out.println("Invalid date format. Please use dd-MM-yyyy.");
+            }
+        }
+    }
+}
